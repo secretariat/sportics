@@ -1,0 +1,30 @@
+<%- model_class = Club -%>
+<%= form_tag clubs_path, :method => :get do %>
+  <p>
+    <%= text_field_tag :search, params[:search] %>
+    <%= submit_tag "Ищу клуб тут", :name => nil %>
+  </p>
+<% end %>
+
+<% content_for :sidebar do %>
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_club_path,
+            :class => 'btn btn-primary' %>
+
+  <% if !@clubs.blank? %>
+    <div class="page-header">
+      <h3>Клубы рядом:</h3>
+    </div>
+    <table class="table table-striped">
+      <tbody>
+        <% @clubs[0..9].each do |club| %>
+          <tr>
+            <h4><%= link_to club.title, club %></h4>
+            <div><%= club.address %></div>
+          </tr>
+          <% end %>
+      </tbody>
+    </table>
+  <% end %>
+<% end %>
+<%= gmaps4rails(@json) %>
